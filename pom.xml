@@ -24,6 +24,7 @@
 		<module>socket-provider</module>
 		<module>gateway</module>
 		<module>socket-api</module>
+		<module>user-api</module>
 		<module>user-provider</module>
 	</modules>
 	<dependencyManagement>
