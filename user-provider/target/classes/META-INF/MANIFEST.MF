@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Built-By: zhuzhsh
+Build-Jdk: 11.0.1
+Implementation-Title: user-provider
+Implementation-Version: 1.0.0-SNAPSHOT
+Implementation-Vendor-Id: com.zhujiu
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-boot
+ -starter-parent/waka/user-provider
+Created-By: Maven Integration for Eclipse
+
