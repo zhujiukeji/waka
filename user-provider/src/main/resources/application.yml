@@ -1,0 +1,38 @@
+server:
+  port: 8081
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/waka?characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false
+    username: root
+    password: 123456
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+    database: 11
+    lettuce:
+      pool:
+        maxIdle: 8
+        minIdle: 0
+  dubbo:
+    server: true
+    registry: 
+      address: zookeeper://127.0.0.1:2181
+      check: false
+      register: true
+    application:
+      id: web
+      name : web
+    protocol:
+      id:  dubbo
+      name: dubbo
+      port: 20880
+logging:
+  level:
+     root: INFO
+     org.springframework.jdbc: DEBUG
+     com.alibaba.dubbo: DEBUG

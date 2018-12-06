@@ -5,7 +5,8 @@
     <artifactId>waka</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>web-api</artifactId>
-  <name>web-api</name>
-  <version>${web-api.version}</version>
+  <artifactId>user-api</artifactId>
+  <name>user-api</name>
+  <version>${user-api.version}</version>
+  <packaging>jar</packaging>
 </project>

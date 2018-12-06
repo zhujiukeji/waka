@@ -1,0 +1,42 @@
+server.port: 8888
+spring:
+  application.name: web
+  webflux:
+    static-path-pattern: /resources/public/**
+  freemarker:
+    request-context-attribute: req
+    suffix: .html
+    content-type: text/html
+    enabled: true
+    cache: false 
+    template-loader-path: classpath:/templates/ 
+    charset: UTF-8 
+    settings:
+      number_format: '0.##' 
+  cloud:
+    zookeeper:
+      connect-string: 127.0.0.1:2181
+      discovery: 
+        instance-port: ${server.port} 
+        root: zhujiu
+        enabled: true
+        register: true
+  dubbo:
+    server: true
+    registry:
+       address: zookeeper://localhost:2181
+       check: false
+       register: true
+    application:
+      id: user-provider
+      name : user-provider
+    protocol:
+      id:  dubbo
+      name: dubbo
+      port: 20880
+
+logging:
+  level:
+     root: INFO
+     freemarker: DEBUG
+     com.alibaba.dubbo: DEBUG
