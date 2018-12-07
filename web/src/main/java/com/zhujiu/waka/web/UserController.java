@@ -4,10 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.reactive.function.server.ServerRequest;
+import org.springframework.web.reactive.function.server.ServerResponse;
+import org.springframework.web.server.ServerWebExchange;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSONObject;
@@ -35,7 +41,7 @@ public class UserController {
 	//@PostMapping
 	@RequestMapping("loginApp")
 	@ResponseBody
-	public Mono<Map<String,Object>> loginApp(String username,String passwd){
+	public Mono<Object> loginApp(ServerHttpRequest request,ServerHttpResponse response,String username,String passwd){
 		Map<String,Object> rs=new HashMap<String,Object>();
 		User u=service.findByUserName(username, passwd);
 		if(u==null) {
@@ -45,13 +51,16 @@ public class UserController {
 			rs.put("errorCode", 0);
 			rs.put("token", u.getToken());
 			rs.put("username", u.getUsername());
-			return Mono.just(rs).log("==登录成功:"+u.getUsername());
+			
+			response.addCookie(ResponseCookie.from("token", u.getToken()).build());
+			return Mono.just(rs);
 		}
 	}
-	@RequestMapping("loginConfirm")
-	@ResponseBody
-	public Mono<Map<String,Object>> loginPcConfirm(String token,String tempToken){
+	@RequestMapping("confirm")
+	public Mono<Map<String,Object>> loginPcConfirm(ServerHttpRequest request,String tempToken){
 		Map<String,Object> rs=new HashMap<String,Object>();
+		
+		String token=request.getCookies().getFirst("token").getValue();
 		if(token==null||token.length()<36||tempToken==null||tempToken.length()<36) {
 			//非法token
 			rs.put("errorCode", 102);
@@ -68,7 +77,8 @@ public class UserController {
 				user.setToken(token);
 				user.setUsername(u.getUsername());
 				user.setStatus(UserInfo.STATUS_SUCCESS);
-				Mono.just(rs).doOnError((ex)->{ex.printStackTrace();}).log("=========发送成功："+socket.send(tempToken,"login", user));
+				socket.send(tempToken,"login", user);
+				Mono.just(user);
 			}
 		}
 		return Mono.just(rs);

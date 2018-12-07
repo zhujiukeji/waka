@@ -32,14 +32,13 @@ public class QrcodeController {
 	}
 	
 	@RequestMapping("scan")
-	public Mono<Map<String,String>> scan(String token,String uid,ServerResponse response){
+	public Mono<Map<String,String>> scan(String token,String uid){
 		UserInfo user=new UserInfo();
 		user.setStatus(UserInfo.STATUS_SCAN);
 		socketService.send(uid, "login", user);
 		Map<String,String> rs=new HashMap<String,String>();
 		rs.put("token", token);
 		rs.put("uid", uid);
-		response.cookies().add("token", ResponseCookie.from("token", token).build());
 		return Mono.just(rs);
 	}
 }
