@@ -87,6 +87,16 @@
 				<artifactId>fastjson</artifactId>
 				<version>1.2.54</version>
 			</dependency>
+			<dependency>
+				<groupId>com.corundumstudio.socketio</groupId>
+				<artifactId>netty-socketio</artifactId>
+				<version>1.7.16</version>
+			</dependency>
+			<dependency>
+			  <groupId>org.redisson</groupId>
+			  <artifactId>redisson</artifactId>
+			  <version>3.8.2</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 

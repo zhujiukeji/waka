@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+        <meta charset="utf-8" />
+
+        <title>Demo Chat</title>
+
+        <link href="bootstrap.css" rel="stylesheet">
+
+	<style>
+		body {
+			padding:20px;
+		}
+		#console {
+			height: 400px;
+			overflow: auto;
+		}
+		.username-msg {color:orange;}
+		.connect-msg {color:green;}
+		.disconnect-msg {color:red;}
+		.send-msg {color:#888}
+	</style>
+
+
+	<script src="js/socket.io/socket.io.js"></script>
+        <script src="js/moment.min.js"></script>
+        <script src="js/jquery-1.12.4.min.js"></script>
+<script src="js/jquery.qrcode.min.js"></script>
+	<script>
+
+                var userName = '90c4b77d-50be-410d-bafa-a1c5275c3d50';
+
+		var socket =  io.connect('http://localhost:9096?token='+userName,{"transports":['websocket', 'polling']});
+
+		socket.on('connect', function() {
+			//output('<span class="connect-msg">Client has connected to the server!</span>');
+		});
+
+		socket.on('login', function(data) {
+			alert(data);
+		});
+
+		socket.on('disconnect', function() {
+			output('<span class="disconnect-msg">The client has disconnected!</span>');
+		});
+
+                function sendDisconnect() {
+                        socket.disconnect();
+                }
+
+		function sendMessage() {
+                        var message = $('#msg').val();
+                        $('#msg').val('');
+
+                        var jsonObject = {userName: userName,
+                                          message: message};
+                        socket.emit('chatevent', jsonObject);
+		}
+
+        });
+	</script>
+</head>
+
+<body>
+
+	<h1>扫描二维码登录</h1>
+
+	<br/>
+
+	<div id="qrCodeDiv" >
+	</div>
+
+
+
+
+</body>
+<script>
+$("#qrCodeDiv").qrcode({
+	   render: "canvas", // 渲染方式有table方式（IE兼容）和canvas方式
+	    width: 260, //宽度
+	    height: 260, //高度
+	    text: "www.baidu.com", //内容
+	    typeNumber: -1,//计算模式
+	    correctLevel: 2,//二维码纠错级别
+	    background: "#ffffff",//背景颜色
+	    foreground: "#000000"  //二维码颜色
+	});
+</script>
+
+</html>

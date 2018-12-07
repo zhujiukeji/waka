@@ -3,15 +3,16 @@ package com.zhujiu.waka.web;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSONObject;
 import com.zhujiu.waka.socket.api.SocketService;
+import com.zhujiu.waka.socket.obj.UserInfo;
 import com.zhujiu.waka.user.api.UserService;
 import com.zhujiu.waka.user.obj.User;
 
@@ -20,6 +21,7 @@ import reactor.core.publisher.Mono;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+	private final org.slf4j.Logger log=LoggerFactory.getLogger(UserController.class);
 	@Reference(interfaceClass = UserService.class, version = "1.0.0", check = false)
 	private UserService service;
 	@Reference(interfaceClass = SocketService.class, version = "1.0.0", check = false)
@@ -43,8 +45,7 @@ public class UserController {
 			rs.put("errorCode", 0);
 			rs.put("token", u.getToken());
 			rs.put("username", u.getUsername());
-			
-			return Mono.just(rs);
+			return Mono.just(rs).log("==登录成功:"+u.getUsername());
 		}
 	}
 	@RequestMapping("loginConfirm")
@@ -63,7 +64,11 @@ public class UserController {
 				rs.put("errorCode", 0);
 				rs.put("token", token);
 				rs.put("username", u.getUsername());
-				socket.send(tempToken, JSONObject.toJSONString(rs));
+				UserInfo user=new UserInfo();
+				user.setToken(token);
+				user.setUsername(u.getUsername());
+				user.setStatus(UserInfo.STATUS_SUCCESS);
+				Mono.just(rs).doOnError((ex)->{ex.printStackTrace();}).log("=========发送成功："+socket.send(tempToken,"login", user));
 			}
 		}
 		return Mono.just(rs);

@@ -12,12 +12,14 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.alibaba.dubbo.spring.boot.annotation.EnableDubboConfiguration;
 
 
 @SpringBootApplication
+@Configuration
 @EnableDubboConfiguration
 @ComponentScan("com.zhujiu.waka")
 public class UserServer implements CommandLineRunner,DisposableBean{

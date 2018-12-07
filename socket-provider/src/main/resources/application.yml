@@ -1,0 +1,53 @@
+server:
+  port: 8087
+socketio:
+  hostname: 0.0.0.0
+  port: 9096
+  upgrade-timeout: 10000
+  ping-interval: 5000
+  ping-timeout: 5000
+  redis-host: redis://127.0.0.1:6379
+  redis-port: 6379
+  redis-database: 5
+  redis-password: 123456
+  redis-min-idle-size: 4
+  redis-pool-size: 16
+  redis-subscription-connection-pool-size: 4
+spring:
+  cloud:
+    zookeeper:
+      connect-string: 127.0.0.1:2181
+      discovery: 
+        instance-port: ${socketio.port} 
+        root: zhujiu
+        enabled: true
+        register: true
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+    database: 2
+    lettuce:
+      pool:
+        maxIdle: 8
+        minIdle: 0
+  dubbo:
+    server: true
+    registry:
+      address: zookeeper://127.0.0.1:2181
+      check: false
+      register: true
+    application:
+      id: socket
+      name: socket
+    protocol:
+      id: dubbo
+      name: dubbo
+      port: 20884
+logging:
+  level:
+    pattern:
+      console: \%d{yyyy/MM/dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n 
+    root: INFO,Console
+    com.zhujiu.waka: DEBUG
+    com.alibaba.dubbo: DEBUG

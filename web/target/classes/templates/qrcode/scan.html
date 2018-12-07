@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"/>
+
+<title>确认</title>
+
+<link href="../public/client/bootstrap.css" rel="stylesheet">
+
+<style>
+body {
+	padding: 20px;
+}
+
+#console {
+	height: 400px;
+	overflow: auto;
+}
+
+.username-msg {
+	color: orange;
+}
+
+.connect-msg {
+	color: green;
+}
+
+.disconnect-msg {
+	color: red;
+}
+
+.send-msg {
+	color: #888
+}
+</style>
+
+
+<script src="../public/client/js/jquery-1.12.4.min.js"></script>
+
+<script>
+	
+</script>
+</head>
+
+<body>
+
+	<h1>扫描二维码登录</h1>
+	${uid}
+	<br />
+
+	<div id="qrCodeDiv">
+	<a id=“confirm” href="/login/loginPcConfirm?token=">登录</a>
+	</div>
+
+
+
+
+</body>
+<script>
+	$("#confirm").click()
+</script>
+
+</html>

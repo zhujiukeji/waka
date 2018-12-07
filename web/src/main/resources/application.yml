@@ -2,7 +2,7 @@ server.port: 8888
 spring:
   application.name: web
   webflux:
-    static-path-pattern: /resources/public/**
+    static-path-pattern: /public/**
   freemarker:
     request-context-attribute: req
     suffix: .html
@@ -36,7 +36,11 @@ spring:
       port: 20880
 
 logging:
+  pattern:
+    console: "[%d] [%thread] %-5level %logger- %msg%n"
   level:
      root: INFO
      freemarker: DEBUG
+     com.zhujiu.waka: DEBUG
+     org.springframework: DEBUG
      com.alibaba.dubbo: DEBUG
